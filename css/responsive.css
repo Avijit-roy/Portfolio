@@ -18,9 +18,11 @@
   .hero-cta { flex-direction: column; }
 
   .navbar { padding: 1rem 1.5rem; }
+  .nav-logo { position: relative; z-index: 100; }
   .nav-links {
-    display: none; position: fixed; inset: 0;
-    background: hsla(0, 0%, 4%, 0.97);
+    display: none; position: absolute;
+    top: -1rem; left: -1.5rem; width: 100vw; height: 100vh;
+    background: hsla(0, 0%, 4%, 0.98);
     flex-direction: column; align-items: center; justify-content: center;
     gap: 2.5rem; z-index: 99;
   }
