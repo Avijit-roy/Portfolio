@@ -1,6 +1,9 @@
 # Avijit Roy — Creative Developer Portfolio
 
-An immersive, premium, high-fidelity portfolio website built with pure HTML, Vanilla CSS, and JavaScript. Featuring a real-time interactive Three.js 3D canvas, dynamic starfield particle systems, ambient audio, GitHub REST API integrations, and client recommendation carousels.
+An immersive, premium, high-fidelity portfolio website built with pure HTML, Vanilla CSS, and JavaScript. Featuring a real-time interactive Three.js 3D canvas, dynamic starfield particle systems, and advanced REST API integrations.
+
+### 🌐 Live Demo
+👉 **[View Live Portfolio](https://portfolio-xi-teal-37.vercel.app/)**
 
 ---
 
@@ -81,7 +84,7 @@ MyPortfolio/
 ## ⚡ Quick Start
 
 ### ⚠️ Important: CORS Policy Restriction
-Modern browsers strictly prevent loading external binary files (like the `.glb` 3D model) directly from the local file system (`file://` protocol) due to Cross-Origin Resource Sharing (CORS) security guidelines.
+Modern browsers strictly prevent loading external binary files (like the `.glb` 3D model) directly from the local file system (`file://` protocol) due to Cross-Origin Resource Sharing (CORS) security restrictions.
 
 **To run the website locally and view the 3D model, you must use a local HTTP server:**
 
@@ -108,3 +111,12 @@ Modern browsers strictly prevent loading external binary files (like the `.glb` 
 * [Space Grotesk & Inter](https://fonts.google.com/) — Elegant typography from Google Fonts.
 * [RandomUser API](https://randomuser.me/) — Realistic, dynamic client avatars.
 * [GitHub REST API](https://docs.github.com/en/rest) — Star metrics and user information.
+
+---
+
+## 📝 License
+This project is open source and available for educational and personal use.
+
+---
+
+**Made with ❤️ by Avijit Roy**
