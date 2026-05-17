@@ -1,0 +1,49 @@
+/* ABOUT — About grid, skills, stat cards, GitHub profile card */
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+.about-text .section-label { margin-bottom: 0.75rem; }
+.about-text .section-title { margin-bottom: 1.5rem; }
+.about-desc { color: var(--text-secondary); line-height: 1.8; margin-bottom: 1.1rem; font-size: 0.97rem; }
+.skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem 1.5rem; margin-top: 2rem; }
+.skill-item {
+  display: flex; align-items: center; gap: 0.6rem; font-size: 0.9rem;
+  color: var(--text-secondary); font-weight: 500; padding: 0.4rem 0;
+  border-bottom: 1px solid hsla(270,20%,30%,0.25); transition: color var(--transition);
+}
+.skill-item:hover { color: var(--purple-1); }
+.skill-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--purple-1); flex-shrink: 0; box-shadow: 0 0 6px var(--purple-glow); }
+.about-visual { position: relative; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 1.5rem; }
+.about-blob {
+  position: absolute; width: 320px; height: 320px; border-radius: 50%;
+  background: radial-gradient(circle, hsla(270,80%,50%,0.18), transparent 70%);
+  filter: blur(40px); animation: blobPulse 4s ease-in-out infinite;
+}
+.stat-card {
+  background: var(--bg-card); border: 1px solid var(--bg-card-border);
+  border-radius: var(--radius-lg); padding: 1.75rem 1.5rem;
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  text-align: center; transition: transform var(--transition), border-color var(--transition);
+}
+.stat-card:hover { transform: translateY(-5px); border-color: hsla(270,60%,55%,0.35); }
+.stat-number {
+  display: inline-block; font-size: 2.4rem; font-weight: 800;
+  background: linear-gradient(135deg, var(--purple-1), #fff);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1;
+}
+.stat-plus { font-size: 1.4rem; font-weight: 700; color: var(--purple-1); vertical-align: top; margin-top: 0.2rem; display: inline-block; }
+.stat-label { display: block; font-size: 0.78rem; color: var(--text-muted); margin-top: 0.5rem; letter-spacing: 0.05em; font-weight: 500; text-transform: uppercase; }
+/* GitHub Profile Card */
+.gh-profile-card {
+  position: relative; z-index: 2; display: flex; align-items: center; gap: 1.25rem;
+  background: var(--bg-card); border: 1px solid var(--bg-card-border);
+  border-radius: var(--radius-lg); padding: 1.25rem 1.5rem;
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  width: 100%; transition: border-color var(--transition), transform var(--transition);
+}
+.gh-profile-card:hover { border-color: hsla(270,60%,55%,0.4); transform: translateY(-4px); }
+.gh-avatar { width: 64px; height: 64px; border-radius: 50%; border: 2px solid var(--purple-1); box-shadow: 0 0 20px hsla(270,80%,50%,0.35); flex-shrink: 0; }
+.gh-info { flex: 1; min-width: 0; }
+.gh-name { font-size: 1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.1rem; }
+.gh-username { font-size: 0.8rem; color: var(--purple-1); margin-bottom: 0.4rem; font-weight: 500; }
+.gh-bio { font-size: 0.78rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 0.6rem; }
+.gh-meta-row { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.gh-meta-item { font-size: 0.72rem; color: var(--text-muted); }

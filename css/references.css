@@ -1,0 +1,183 @@
+/* REFERENCES — Testimonial slider / carousel */
+.references-section {
+  background: hsla(270, 20%, 4%, 0.45);
+  position: relative;
+  overflow: hidden;
+}
+
+.slider-container {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem 0;
+}
+
+.slider-viewport {
+  overflow: hidden;
+  width: 100%;
+  border-radius: var(--radius-xl);
+}
+
+.slider-track {
+  display: flex;
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform;
+}
+
+.reference-card {
+  flex: 0 0 100%;
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--bg-card-border);
+  padding: 3rem 2.5rem;
+  border-radius: var(--radius-xl);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  box-sizing: border-box;
+  transition: border-color var(--transition), transform var(--transition);
+}
+.reference-card:hover {
+  border-color: hsla(270, 60%, 55%, 0.35);
+  transform: scale(0.99);
+}
+
+/* Quote Graphic Overlay */
+.ref-quote-icon {
+  position: absolute;
+  top: 1.5rem;
+  right: 2rem;
+  font-size: 6rem;
+  line-height: 1;
+  color: hsla(270, 80%, 65%, 0.08);
+  font-family: serif;
+  pointer-events: none;
+  user-select: none;
+}
+
+.ref-text {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  line-height: 1.75;
+  color: var(--text-primary);
+  font-weight: 500;
+  margin-bottom: 2rem;
+  font-style: italic;
+  position: relative;
+  z-index: 1;
+}
+
+.ref-author {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ref-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 2px solid var(--purple-1);
+  box-shadow: 0 0 16px hsla(270, 80%, 50%, 0.25);
+  object-fit: cover;
+  background: hsla(270, 10%, 15%, 0.6);
+}
+
+.ref-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.ref-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.ref-title {
+  font-size: 0.8rem;
+  color: var(--purple-1);
+  font-weight: 600;
+  margin-top: 0.1rem;
+}
+
+/* Slider Controls */
+.slider-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.slider-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--bg-card-border);
+  color: var(--text-primary);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.slider-btn:hover {
+  border-color: var(--purple-1);
+  color: var(--purple-1);
+  transform: scale(1.08);
+}
+.slider-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.slider-dots {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.slider-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: hsla(270, 20%, 40%, 0.4);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.slider-dot.active {
+  background: var(--purple-1);
+  width: 20px;
+  border-radius: 4px;
+  box-shadow: 0 0 8px var(--purple-glow);
+}
+
+/* Skeleton Loading State */
+.ref-skeleton {
+  background: linear-gradient(
+    90deg,
+    hsla(270, 15%, 12%, 0.6) 25%,
+    hsla(270, 20%, 18%, 0.4) 50%,
+    hsla(270, 15%, 12%, 0.6) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s infinite;
+  border-radius: var(--radius-xl);
+  height: 280px;
+  border: 1px solid hsla(270, 20%, 20%, 0.2);
+}
+
+@media (max-width: 700px) {
+  .reference-card {
+    padding: 2.25rem 1.5rem;
+  }
+  .ref-text {
+    margin-bottom: 1.5rem;
+  }
+}

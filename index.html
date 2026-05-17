@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Avijit Roy — Creative Developer</title>
+  <meta name="description" content="Curious observer passionate about exploring new ideas, technologies, and perspectives. Full-stack developer from India." />
+  <link rel="icon" type="image/png" href="icons8-star-100.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Component Stylesheets -->
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/cursor.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/hero.css" />
+  <link rel="stylesheet" href="css/work.css" />
+  <link rel="stylesheet" href="css/about.css" />
+  <link rel="stylesheet" href="css/github.css" />
+  <link rel="stylesheet" href="css/references.css" />
+  <link rel="stylesheet" href="css/contact.css" />
+  <link rel="stylesheet" href="css/footer.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body>
+
+  <audio id="bg-audio" autoplay loop src="leberch-space-440026.mp3"></audio>
+
+  <canvas id="stars-canvas"></canvas>
+  <canvas id="blob-canvas"></canvas>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar" id="navbar">
+    <a href="#hero" class="nav-logo">
+      <span class="logo-text">PORT<span class="logo-accent">FOLIO</span></span>
+    </a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#work"    class="nav-link" id="nav-work">Work</a></li>
+      <li><a href="#about"   class="nav-link" id="nav-about">About</a></li>
+      <li><a href="Aj.pdf"  target="_blank" class="nav-link" id="nav-resume">Resume</a></li>
+      <li><a href="#contact" class="nav-link" id="nav-contact">Contact</a></li>
+    </ul>
+    <button class="sound-toggle paused" id="sound-toggle" aria-label="Toggle ambient music">
+      <span class="bar bar-1"></span>
+      <span class="bar bar-2"></span>
+      <span class="bar bar-3"></span>
+      <span class="bar bar-4"></span>
+    </button>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero" id="hero">
+    <div class="hero-card">
+      <img src="ChatGPTImage.png" alt="Avijit Roy" class="hero-avatar" />
+      <p class="hero-label">Creative Developer · India 🇮🇳</p>
+      <h1 class="hero-title">Hi, I'm <span class="hero-title-accent">Avijit Roy</span></h1>
+      <p class="hero-sub">Curious observer passionate about exploring new ideas, technologies, and perspectives. I build full-stack apps, IoT systems, and immersive web experiences.</p>
+    </div>
+
+    <div class="social-links" id="social-links">
+      <a href="https://github.com/Avijit-roy" target="_blank" rel="noopener" class="social-icon" id="social-github" aria-label="GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+      </a>
+      <a href="https://twitter.com/AvijitR67180451" target="_blank" rel="noopener" class="social-icon" id="social-twitter" aria-label="Twitter / X">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      </a>
+      <a href="https://linkedin.com" target="_blank" rel="noopener" class="social-icon" id="social-linkedin" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 23.2 0 22.222 0h.003z"/></svg>
+      </a>
+      <a href="mailto:hello@avijit.dev" class="social-icon" id="social-email" aria-label="Email">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- ===== WORK SECTION ===== -->
+  <section class="section work-section" id="work">
+    <div class="section-inner">
+      <div class="section-header">
+        <span class="section-label">Selected Work</span>
+        <h2 class="section-title">Featured <span class="accent">Projects</span></h2>
+        <p class="section-sub">My most starred repositories on GitHub</p>
+      </div>
+      <div class="projects-grid" id="projects-grid">
+        <div class="proj-skeleton"></div>
+        <div class="proj-skeleton"></div>
+        <div class="proj-skeleton"></div>
+      </div>
+      <div class="view-all-wrap">
+        <a href="https://github.com/Avijit-roy?tab=repositories" target="_blank" rel="noopener" class="btn btn-ghost" id="btn-view-all-repos">
+          View all repositories on GitHub <span class="btn-arrow">↗</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT SECTION ===== -->
+  <section class="section about-section" id="about">
+    <div class="section-inner about-grid">
+      <div class="about-text">
+        <span class="section-label">About Me</span>
+        <h2 class="section-title">Curious builder,<br /><span class="accent">passionate learner</span></h2>
+        <p class="about-desc">I'm Avijit Roy (aka Aj_shadow), a self-driven developer from India with a curiosity for exploring new ideas, technologies, and perspectives. I love crafting everything from IoT systems and AI pipelines to full-stack web apps and creative coding experiments.</p>
+        <p class="about-desc">From building an Instagram-inspired social platform to integrating deep learning with real-time sensor data — I enjoy projects that sit at the intersection of software, hardware, and human experience.</p>
+        <div class="skills-grid">
+          <div class="skill-item" id="skill-1"><span class="skill-dot"></span>React / Node.js</div>
+          <div class="skill-item" id="skill-2"><span class="skill-dot"></span>Python / TensorFlow</div>
+          <div class="skill-item" id="skill-3"><span class="skill-dot"></span>MongoDB / Express</div>
+          <div class="skill-item" id="skill-4"><span class="skill-dot"></span>Socket.IO / MQTT</div>
+          <div class="skill-item" id="skill-5"><span class="skill-dot"></span>C / Systems</div>
+          <div class="skill-item" id="skill-6"><span class="skill-dot"></span>IoT / Arduino</div>
+        </div>
+      </div>
+      <div class="about-visual" id="about-visual">
+        <div class="about-blob"></div>
+        <div class="gh-profile-card">
+          <img src="https://avatars.githubusercontent.com/u/105531661?v=4" alt="Avijit Roy avatar" class="gh-avatar" id="gh-avatar" />
+          <div class="gh-info">
+            <div class="gh-name">Avijit Roy</div>
+            <div class="gh-username">@Avijit-roy</div>
+            <div class="gh-bio">Curious observer passionate about exploring new ideas, technologies, and perspectives.</div>
+            <div class="gh-meta-row">
+              <span class="gh-meta-item">📍 India</span>
+              <span class="gh-meta-item">🐦 @AvijitR67180451</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== GITHUB SECTION ===== -->
+  <section class="section github-section" id="github">
+    <div class="section-inner">
+      <div class="section-header">
+        <span class="section-label">Open Source</span>
+        <h2 class="section-title">GitHub <span class="accent">Contribution</span></h2>
+      </div>
+      <div class="contrib-wrap" id="contrib-wrap">
+        <div class="contrib-header">
+          <span class="contrib-title">Contribution Graph</span>
+          <a href="https://github.com/Avijit-roy" target="_blank" rel="noopener" class="contrib-link">View Profile ↗</a>
+        </div>
+        <div class="contrib-chart-box">
+          <img src="https://ghchart.rshah.org/9333ff/Avijit-roy" alt="Avijit Roy GitHub Contribution Chart" class="contrib-chart-img" id="contrib-chart-img" loading="lazy" />
+        </div>
+        <p class="contrib-note">Contribution activity on GitHub since May 2022</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== REFERENCES SECTION ===== -->
+  <section class="section references-section" id="references">
+    <div class="section-inner">
+      <div class="section-header">
+        <span class="section-label">Recommendations</span>
+        <h2 class="section-title">Client <span class="accent">Feedback</span></h2>
+        <p class="section-sub">What professionals wrote about their experience working with me</p>
+      </div>
+      <div class="slider-container" id="references-slider-container">
+        <div class="ref-skeleton"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT SECTION ===== -->
+  <section class="section contact-section" id="contact">
+    <div class="section-inner contact-inner">
+      <span class="section-label">Get In Touch</span>
+      <h2 class="section-title">Let's build something <span class="accent">amazing</span></h2>
+      <p class="contact-sub">Have a project in mind? I'd love to hear about it. Send me a message and let's create something extraordinary together.</p>
+      <form class="contact-form" id="contact-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Your Name</label>
+            <input type="text" id="name" name="name" placeholder="Your name" required />
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="hello@example.com" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="subject">Subject</label>
+          <input type="text" id="subject" name="subject" placeholder="Project collaboration" />
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="5" placeholder="Tell me about your project..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full" id="btn-send">
+          Send Message <span class="btn-arrow">→</span>
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <span class="logo-text footer-logo">PORT<span class="logo-accent">FOLIO</span></span>
+      <p class="footer-copy">© 2026 Avijit Roy · Crafted with 💜 from India</p>
+      <div class="footer-socials">
+        <a href="https://github.com/Avijit-roy" target="_blank" rel="noopener" aria-label="GitHub" class="social-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+        </a>
+        <a href="https://twitter.com/AvijitR67180451" target="_blank" rel="noopener" aria-label="Twitter" class="social-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Three.js dependencies -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+
+  <!-- Component Scripts (order matters) -->
+  <script src="js/cursor.js"></script>
+  <script src="js/stars.js"></script>
+  <script src="js/model3d.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/projects.js"></script>
+  <script src="js/references.js"></script>
+  <script src="js/contact.js"></script>
+  <script src="js/audio.js"></script>
+
+</body>
+</html>

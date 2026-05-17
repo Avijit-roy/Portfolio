@@ -1,0 +1,57 @@
+/* WORK — Project cards, grid, skeletons */
+.work-section { background: hsla(270, 20%, 6%, 0.5); }
+.projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.75rem; }
+.project-card {
+  background: var(--bg-card); border: 1px solid var(--bg-card-border);
+  border-radius: var(--radius-lg); overflow: hidden;
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition); cursor: pointer;
+}
+.project-card:hover { transform: translateY(-8px); border-color: hsla(270,60%,55%,0.4); box-shadow: 0 20px 60px hsla(270,80%,30%,0.25); }
+.project-img-wrap { position: relative; height: 200px; overflow: hidden; }
+.project-img { width: 100%; height: 100%; transition: transform var(--transition); display: block; }
+.project-img-photo { object-fit: cover; object-position: center; filter: brightness(0.82) saturate(1.1); }
+.project-card:hover .project-img-photo { filter: brightness(0.65) saturate(1.2); }
+.proj-skeleton {
+  background: linear-gradient(90deg, hsla(270,15%,12%,0.6) 25%, hsla(270,20%,18%,0.4) 50%, hsla(270,15%,12%,0.6) 75%);
+  background-size: 200% 100%; animation: shimmer 1.6s infinite;
+  border-radius: var(--radius-lg); height: 340px; border: 1px solid hsla(270,20%,20%,0.2);
+}
+.project-overlay {
+  position: absolute; inset: 0; background: hsla(270,30%,8%,0.7);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity var(--transition); backdrop-filter: blur(6px);
+}
+.project-card:hover .project-overlay { opacity: 1; }
+.project-link {
+  color: #fff; text-decoration: none; font-weight: 600; font-size: 0.9rem;
+  border: 1.5px solid rgba(255,255,255,0.5); padding: 0.5rem 1.25rem;
+  border-radius: var(--radius-full); transition: var(--transition);
+}
+.project-link:hover { background: var(--purple-2); border-color: var(--purple-2); }
+.project-info { padding: 1.4rem 1.5rem 1.6rem; }
+.project-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
+.tag {
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.05em; padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full); background: hsla(270,50%,50%,0.15);
+  color: var(--purple-1); border: 1px solid hsla(270,50%,55%,0.2);
+}
+.project-name { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text-primary); }
+.project-desc { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.65; }
+.view-all-wrap { margin-top: 2.5rem; text-align: center; }
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-main);
+  font-size: 0.95rem; font-weight: 600; padding: 0.8rem 1.8rem;
+  border-radius: var(--radius-full); text-decoration: none; border: none; cursor: pointer;
+  transition: var(--transition); position: relative; overflow: hidden;
+}
+.btn::before { content: ''; position: absolute; inset: 0; background: rgba(255,255,255,0.08); opacity: 0; transition: opacity 0.2s; }
+.btn:hover::before { opacity: 1; }
+.btn-primary { background: linear-gradient(135deg, var(--purple-2), var(--purple-3)); color: #fff; box-shadow: 0 4px 30px hsla(270,80%,50%,0.4); }
+.btn-primary:hover { box-shadow: 0 6px 40px hsla(270,80%,50%,0.6); transform: translateY(-2px); }
+.btn-ghost { background: transparent; color: var(--text-primary); border: 1.5px solid hsla(0,0%,70%,0.3); }
+.btn-ghost:hover { border-color: var(--purple-1); color: var(--purple-1); transform: translateY(-2px); }
+.btn-arrow { display: inline-block; transition: transform 0.25s; }
+.btn:hover .btn-arrow { transform: translateX(4px); }
+.btn-full { width: 100%; justify-content: center; }

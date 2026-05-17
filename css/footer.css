@@ -1,0 +1,6 @@
+/* FOOTER */
+.footer { position: relative; z-index: 10; border-top: 1px solid hsla(270, 20%, 30%, 0.15); padding: 2rem 3rem; }
+.footer-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+.footer-logo { font-size: 0.9rem; }
+.footer-copy { font-size: 0.82rem; color: var(--text-muted); }
+.footer-socials { display: flex; gap: 1rem; }
