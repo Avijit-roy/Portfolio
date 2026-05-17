@@ -1,10 +1,16 @@
-/* js/model3d.js — Three.js scene, GLTF model, lights, animation */
+/* js/model3d.js — Three.js scene, GLTF model, lights, animation
+   PERF: frame-capped to 40fps, paused when off-screen or tab hidden */
 (function initBlob() {
   if (typeof THREE === 'undefined') return;
 
-  const canvas   = document.getElementById('blob-canvas');
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  const canvas = document.getElementById('blob-canvas');
+  const renderer = new THREE.WebGLRenderer({
+    canvas,
+    antialias: false,          // off — biggest GPU saving
+    alpha: true,
+    powerPreference: 'high-performance',
+  });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5)); // cap DPR
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setClearColor(0x000000, 0);
 
@@ -12,7 +18,6 @@
   const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
   camera.position.set(0, 0, 4.5);
 
-  // Pivot group — model rotates around its visual center
   let loadedModel = null;
   const pivotGroup = new THREE.Group();
   scene.add(pivotGroup);
@@ -21,20 +26,18 @@
   loader.load('pixellabs-potion-3620.glb', gltf => {
     loadedModel = gltf.scene;
 
-    const box  = new THREE.Box3().setFromObject(loadedModel);
-    const size = new THREE.Vector3(); box.getSize(size);
+    const box    = new THREE.Box3().setFromObject(loadedModel);
+    const size   = new THREE.Vector3(); box.getSize(size);
     const center = new THREE.Vector3(); box.getCenter(center);
 
     const maxDim = Math.max(size.x, size.y, size.z);
     const scale  = (isFinite(maxDim) && maxDim > 0.0001) ? 3.5 / maxDim : 1.5;
     loadedModel.scale.set(scale, scale, scale);
-
     loadedModel.position.set(
       isFinite(center.x) ? -center.x * scale : 0,
       isFinite(center.y) ? -center.y * scale : 0,
       isFinite(center.z) ? -center.z * scale : 0
     );
-
     pivotGroup.add(loadedModel);
   }, undefined, err => console.error('GLTF load error:', err));
 
@@ -49,7 +52,7 @@
   const light2 = new THREE.PointLight(0x4400cc, 2, 10);
   light2.position.set(-2, -1, -2); scene.add(light2);
 
-  // Mouse & drag tracking
+  // Input tracking
   const mouse     = new THREE.Vector2(0.5, 0.5);
   const targetRot = new THREE.Vector2(0, 0);
   window.addEventListener('mousemove', e => {
@@ -59,8 +62,8 @@
 
   let isDragging = false, prevX = 0, prevY = 0;
   let dragRotX = 0, dragRotY = 0, targetDragRotX = 0, targetDragRotY = 0;
-
   const IGNORE = 'a, button, input, textarea, .project-card, .stat-card, .skill-item, .contact-form, .navbar, .gh-profile-card';
+
   window.addEventListener('mousedown', e => {
     if (e.target.closest(IGNORE)) return;
     isDragging = true; prevX = e.clientX; prevY = e.clientY;
@@ -85,30 +88,44 @@
   }, { passive: true });
   window.addEventListener('touchend', () => { isDragging = false; });
 
-  // Resize
   window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
   });
 
-  // Visibility: only animate when hero is in view
+  // Visibility gate — stop render when hero is scrolled away
   const heroSection = document.getElementById('hero');
   let blobVisible = true;
   new IntersectionObserver(entries => {
     blobVisible = entries[0].isIntersecting;
     canvas.style.opacity = blobVisible ? '1' : '0';
-  }, { threshold: 0.1 }).observe(heroSection);
+  }, { threshold: 0.05 }).observe(heroSection);
 
-  // Animation loop
+  // Tab-hidden gate — stop render when tab is inactive
+  let tabVisible = !document.hidden;
+  document.addEventListener('visibilitychange', () => { tabVisible = !document.hidden; });
+
+  // Frame-rate cap: target 40fps instead of native 60fps
+  const FRAME_MS = 1000 / 40;
+  let lastTime = 0;
   let clock = 0;
-  function animate() {
-    requestAnimationFrame(animate);
+  let rafId = null;
+
+  function animate(now) {
+    rafId = requestAnimationFrame(animate);
+
+    // Skip frame if tab is hidden or model is off-screen
+    if (!tabVisible || !blobVisible) return;
+
+    // Throttle to FRAME_MS
+    if (now - lastTime < FRAME_MS) return;
+    lastTime = now;
+
     clock += 0.012;
 
     dragRotX += (targetDragRotX - dragRotX) * 0.08;
     dragRotY += (targetDragRotY - dragRotY) * 0.08;
-
     targetRot.x += (mouse.y * 0.4 - targetRot.x) * 0.04;
     targetRot.y += (mouse.x * 0.5 - targetRot.y) * 0.04;
 
@@ -124,6 +141,6 @@
     renderer.render(scene, camera);
   }
 
-  animate();
+  requestAnimationFrame(animate);
   canvas.style.transition = 'opacity 0.6s ease';
 })();
