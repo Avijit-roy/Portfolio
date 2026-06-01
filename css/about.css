@@ -1,5 +1,25 @@
 /* ABOUT — About grid, skills, stat cards, GitHub profile card */
-.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+.about-section {
+  background: hsla(270, 25%, 5%, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid hsla(270, 50%, 50%, 0.08);
+  border-bottom: 1px solid hsla(270, 50%, 50%, 0.08);
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--bg-card-border);
+  border-radius: var(--radius-xl);
+  padding: 4rem;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+}
 .about-text .section-label { margin-bottom: 0.75rem; }
 .about-text .section-title { margin-bottom: 1.5rem; }
 .about-desc { color: var(--text-secondary); line-height: 1.8; margin-bottom: 1.1rem; font-size: 0.97rem; }
