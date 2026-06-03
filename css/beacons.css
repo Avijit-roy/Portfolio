@@ -1,0 +1,801 @@
+/* BEACONS — Popup panel and beacon labels */
+.beacon-popup {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.4s ease,
+    visibility 0.4s ease;
+  pointer-events: none;
+}
+
+.beacon-popup.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.beacon-card {
+  position: relative;
+  max-width: 500px;
+  width: 90%;
+  max-height: 85vh;
+  overflow-y: auto;
+  background: hsla(270, 30%, 8%, 0.95);
+  border: 1px solid hsla(270, 40%, 50%, 0.3);
+  border-radius: 28px;
+  padding: 3rem 2.5rem;
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.6),
+    0 0 40px hsla(270, 80%, 50%, 0.15);
+  transform: scale(0.9) translateY(20px);
+  transition:
+    transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+    max-width 0.4s ease;
+  text-align: center;
+}
+
+.beacon-card.expanded {
+  max-width: 1100px;
+  text-align: left;
+}
+
+.beacon-card.hero-mode {
+  max-width: 600px;
+  text-align: center;
+}
+
+.beacon-card.hero-mode .beacon-header {
+  display: none;
+}
+
+.beacon-popup.active .beacon-card {
+  transform: scale(1) translateY(0);
+}
+
+.beacon-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: hsla(270, 30%, 15%, 0.8);
+  border: 1px solid hsla(270, 40%, 50%, 0.3);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2010;
+  transition: all 0.3s ease;
+}
+
+.beacon-close:hover {
+  background: hsl(270, 80%, 65%);
+  transform: rotate(90deg);
+}
+
+/* Header persistent styles */
+.beacon-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.beacon-card.expanded .beacon-header {
+  text-align: left;
+  border-bottom: 1px solid hsla(270, 40%, 50%, 0.2);
+  padding-bottom: 1.5rem;
+}
+
+.beacon-tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: hsl(270, 80%, 65%);
+  margin-bottom: 0.8rem;
+  padding: 0.2rem 0.8rem;
+  background: hsla(270, 50%, 50%, 0.1);
+  border-radius: 999px;
+  border: 1px solid hsla(270, 50%, 50%, 0.2);
+}
+
+.beacon-title {
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 0;
+  color: hsl(0, 0%, 96%);
+  background: linear-gradient(135deg, #fff, hsl(270, 80%, 65%));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Section Container Styling */
+.beacon-section-container {
+  width: 100%;
+  margin-top: 1.5rem;
+}
+
+/* Deduplication: Hide inner section wrapper and close button when cloning sections into popup */
+.beacon-section-container .section-header,
+.beacon-section-container .hero-popup,
+.beacon-section-container .hero-close {
+  display: none !important;
+}
+
+/* Visibility Fixes: Force cloned content to be visible inside popup */
+.beacon-section-container .section,
+.beacon-section-container .footer,
+.beacon-section-container .hero-avatar,
+.beacon-section-container .hero-label,
+.beacon-section-container .hero-sub,
+.beacon-section-container .hero-card-socials,
+.beacon-section-container .hero-card,
+.beacon-section-container .project-card,
+.beacon-section-container .reveal {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+}
+
+.beacon-section-container .section-inner {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Beacon 01 (Hero) Overrides */
+.beacon-section-container .hero-card {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 auto !important;
+  box-shadow: none !important;
+  max-width: 100% !important;
+  text-align: center !important;
+}
+
+.beacon-section-container .hero-title {
+  font-size: 2.5rem !important;
+  margin-bottom: 1.5rem !important;
+}
+
+/* Specific overrides for flex/grid elements when shown inside popup */
+.beacon-section-container .projects-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 1.5rem !important;
+  align-items: start !important;
+  width: 100% !important;
+}
+
+@media (max-width: 900px) {
+  .beacon-section-container .projects-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 700px) {
+  .beacon-section-container .projects-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+.beacon-section-container .skills-grid,
+.beacon-section-container .gh-meta-row,
+.beacon-section-container .form-row,
+.beacon-section-container .footer-socials {
+  display: flex !important;
+}
+
+/* ── Overhaul for Contact Section (Beacon 06) ── */
+.beacon-section-container .contact-inner {
+  max-width: 100% !important;
+  text-align: left !important;
+  padding: 0 !important;
+}
+
+.beacon-section-container .contact-inner .section-label,
+.beacon-section-container .contact-inner .section-title {
+  display: none !important;
+}
+
+.beacon-section-container .contact-sub {
+  margin-bottom: 2rem !important;
+  font-size: 1rem !important;
+  line-height: 1.6 !important;
+  color: hsla(0, 0%, 100%, 0.7) !important;
+  max-width: 800px !important;
+}
+
+.beacon-section-container .contact-form {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+  gap: 1.75rem !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.beacon-section-container .form-row {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 1.5rem !important;
+}
+
+.beacon-section-container .form-group label {
+  color: hsl(270, 80%, 75%) !important;
+  font-size: 0.75rem !important;
+  letter-spacing: 0.1em !important;
+  margin-bottom: 0.6rem !important;
+}
+
+.beacon-section-container .form-group input,
+.beacon-section-container .form-group textarea {
+  background: hsla(270, 30%, 12%, 0.4) !important;
+  border: 1px solid hsla(270, 40%, 50%, 0.25) !important;
+  border-radius: 12px !important;
+  padding: 1rem 1.25rem !important;
+  color: #fff !important;
+  transition: all 0.3s ease !important;
+}
+
+.beacon-section-container .form-group input:focus,
+.beacon-section-container .form-group textarea:focus {
+  border-color: hsl(270, 80%, 65%) !important;
+  background: hsla(270, 30%, 15%, 0.6) !important;
+  box-shadow: 0 0 15px hsla(270, 80%, 50%, 0.15) !important;
+}
+
+.beacon-section-container .btn-primary {
+  margin-top: 0.5rem !important;
+  padding: 1.1rem 2rem !important;
+  font-size: 1rem !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+  font-weight: 700 !important;
+  border-radius: 14px !important;
+  background: linear-gradient(135deg, hsl(270, 80%, 60%), hsl(280, 100%, 45%)) !important;
+  box-shadow: 0 8px 25px hsla(270, 80%, 40%, 0.3) !important;
+}
+
+.beacon-section-container .btn-primary:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 12px 35px hsla(270, 80%, 40%, 0.45) !important;
+}
+
+@media (max-width: 768px) {
+  .beacon-section-container .form-row {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ── Slider overrides inside popup ── */
+.beacon-section-container .slider-container {
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 0.5rem 0 !important;
+  overflow: visible !important;
+}
+
+.beacon-section-container .slider-viewport {
+  overflow: hidden !important;
+  width: 100% !important;
+  border-radius: 16px !important;
+}
+
+.beacon-section-container .slider-track {
+  display: flex !important;
+  /* No width constraint — track must grow to fit all cards */
+  will-change: transform !important;
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1) !important;
+}
+
+.beacon-section-container .reference-card {
+  /* Don't use flex-basis:100% — resolves against unconstrained track width */
+  flex: 0 0 auto !important;
+  width: 100% !important;
+  min-width: 100% !important;
+  box-sizing: border-box !important;
+  padding: 2rem 1.75rem !important;
+}
+
+.beacon-section-container .slider-controls {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 1.5rem !important;
+  margin-top: 1.5rem !important;
+  width: 100% !important;
+}
+
+.beacon-section-container .slider-dots {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.6rem !important;
+}
+
+.beacon-section-container .slider-btn {
+  flex-shrink: 0 !important;
+  width: 40px !important;
+  height: 40px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 50% !important;
+  cursor: pointer !important;
+  background: rgba(255,255,255,0.05) !important;
+  border: 1px solid rgba(255,255,255,0.15) !important;
+  color: #ffffff !important;
+  transition: all 0.25s ease !important;
+}
+
+.beacon-section-container .slider-btn:hover {
+  border-color: var(--purple-1) !important;
+  color: var(--purple-1) !important;
+  background: hsla(270,50%,50%,0.12) !important;
+}
+
+.beacon-section-container .slider-btn svg {
+  width: 18px !important;
+  height: 18px !important;
+  display: block !important;
+}
+
+.beacon-section-container .about-grid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 2.5rem !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+.beacon-section-container .section {
+  padding: 0;
+  background: transparent;
+  border: none;
+  backdrop-filter: none;
+  box-shadow: none;
+  min-height: auto;
+  margin: 0;
+}
+
+.beacon-section-container .section-inner {
+  padding: 0;
+  max-width: 100%;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+/* Tweak project card styles when rendered inside the beacon popup */
+.beacon-section-container .project-card {
+  position: relative !important;
+  background: linear-gradient(145deg, hsla(270, 30%, 6%, 0.95), hsla(270, 25%, 10%, 0.95)) !important;
+  border: 1px solid hsla(270, 40%, 50%, 0.25) !important;
+  box-shadow: none !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  height: auto !important;
+  min-height: 350px !important;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+.beacon-section-container .project-card:hover {
+  border-color: hsla(270, 60%, 55%, 0.5) !important;
+  box-shadow: 0 12px 30px hsla(270, 80%, 40%, 0.15) !important;
+}
+
+.beacon-section-container .project-img-wrap {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 1 !important;
+  pointer-events: none !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+}
+
+.beacon-section-container .project-canvas-placeholder {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  opacity: 0.28 !important;
+  pointer-events: none !important;
+}
+
+.beacon-section-container .project-info {
+  position: relative !important;
+  z-index: 2 !important;
+  padding: 116px 24px 24px 24px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  width: 100% !important;
+}
+
+.beacon-section-container .project-overlay {
+  position: absolute !important;
+  top: 24px !important;
+  left: 24px !important;
+  z-index: 3 !important;
+  pointer-events: auto !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.beacon-section-container .project-link-modern {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 72px !important;
+  height: 72px !important;
+  border-radius: 50% !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: #ffffff !important;
+  text-decoration: none !important;
+  transition: all 0.3s ease !important;
+  padding: 0 !important;
+}
+
+.beacon-section-container .project-link-modern:hover {
+  border-color: var(--purple-1) !important;
+  background: hsla(270, 50%, 50%, 0.2) !important;
+  box-shadow: 0 0 15px hsla(270, 80%, 65%, 0.45) !important;
+}
+
+.beacon-section-container .project-link-modern .action-text {
+  font-size: 0.65rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+  margin-bottom: 2px !important;
+  line-height: 1.1 !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+  display: block !important;
+}
+
+.beacon-section-container .project-link-modern .action-arrow {
+  font-size: 1.1rem !important;
+  color: #ffffff !important;
+  transition: transform 0.3s ease !important;
+  display: block !important;
+}
+
+.beacon-section-container .project-link-modern:hover .action-arrow {
+  transform: translateX(4px) !important;
+}
+
+.beacon-section-container .project-tags {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 0.4rem !important;
+  margin-bottom: 0.6rem !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.beacon-section-container .project-tags .tag {
+  font-size: 0.65rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  color: hsl(270, 80%, 75%) !important;
+  border: 1px solid hsla(270, 60%, 55%, 0.4) !important;
+  background: hsla(270, 60%, 55%, 0.06) !important;
+  padding: 3px 8px !important;
+  border-radius: 4px !important;
+}
+
+.beacon-section-container .project-name {
+  font-size: 1.2rem !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.beacon-section-container .project-desc {
+  font-size: 0.85rem !important;
+  color: hsl(270, 10%, 75%) !important;
+  line-height: 1.6 !important;
+}
+
+.beacon-section-container .about-text .section-title {
+  font-size: 2.5rem !important;
+  font-weight: 800 !important;
+  line-height: 1.15 !important;
+  margin-bottom: 1.5rem !important;
+  color: #ffffff !important;
+}
+
+.beacon-section-container .about-text .section-title .accent {
+  color: #ee00ff !important;
+  text-shadow: 0 0 15px rgba(238, 0, 255, 0.3) !important;
+}
+
+.beacon-section-container .about-desc {
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-size: 0.92rem !important;
+  line-height: 1.75 !important;
+  margin-bottom: 1.2rem !important;
+}
+
+.beacon-section-container .skills-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 1rem 1.5rem !important;
+  margin-top: 2.2rem !important;
+}
+
+.beacon-section-container .skill-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.6rem !important;
+  font-size: 0.85rem !important;
+  color: rgba(255, 255, 255, 0.85) !important;
+  border-bottom: none !important;
+  padding: 0 !important;
+}
+
+.beacon-section-container .skill-dot {
+  width: 6px !important;
+  height: 6px !important;
+  background: #ee00ff !important;
+  box-shadow: 0 0 8px #ee00ff !important;
+  border-radius: 50% !important;
+  flex-shrink: 0 !important;
+}
+
+.beacon-section-container .about-visual {
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  gap: 1.25rem !important;
+  width: 100% !important;
+}
+
+.beacon-section-container .about-blob {
+  position: absolute !important;
+  width: 280px !important;
+  height: 280px !important;
+  border-radius: 50% !important;
+  background: radial-gradient(circle, hsla(280, 80%, 50%, 0.18), transparent 70%) !important;
+  filter: blur(40px) !important;
+  z-index: 1 !important;
+  pointer-events: none !important;
+}
+
+.beacon-section-container .gh-profile-card {
+  position: relative !important;
+  z-index: 2 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+  gap: 1rem !important;
+  background: rgba(18, 10, 28, 0.45) !important;
+  border: 1px solid hsla(270, 40%, 50%, 0.25) !important;
+  border-top: 3px solid #ee00ff !important;
+  border-radius: 16px !important;
+  padding: 2.2rem 1.5rem 1.8rem 1.5rem !important;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4) !important;
+  width: 100% !important;
+  transform: none !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+}
+
+.beacon-section-container .gh-avatar-wrap {
+  position: relative !important;
+  display: inline-block !important;
+  margin-bottom: 0.2rem !important;
+}
+
+.beacon-section-container .gh-avatar {
+  width: 84px !important;
+  height: 84px !important;
+  border-radius: 50% !important;
+  border: 3px solid #ee00ff !important;
+  box-shadow: 0 0 25px rgba(238, 0, 255, 0.4) !important;
+  flex-shrink: 0 !important;
+}
+
+.beacon-section-container .gh-badge {
+  position: absolute !important;
+  bottom: 2px !important;
+  right: 2px !important;
+  width: 22px !important;
+  height: 22px !important;
+  border-radius: 50% !important;
+  background: #ee00ff !important;
+  color: #ffffff !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 0 10px rgba(238, 0, 255, 0.6) !important;
+  border: 2px solid #120a1c !important;
+  z-index: 3 !important;
+}
+
+.beacon-section-container .gh-badge svg {
+  display: block !important;
+}
+
+.beacon-section-container .gh-name {
+  font-size: 1.15rem !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  margin-bottom: 0.1rem !important;
+}
+
+.beacon-section-container .gh-username {
+  font-size: 0.85rem !important;
+  color: #ee00ff !important;
+  font-weight: 600 !important;
+  margin-bottom: 0.6rem !important;
+}
+
+.beacon-section-container .gh-bio {
+  font-size: 0.8rem !important;
+  color: rgba(255, 255, 255, 0.75) !important;
+  line-height: 1.55 !important;
+  margin-bottom: 1rem !important;
+}
+
+.beacon-section-container .gh-meta-row {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  margin-bottom: 1.25rem !important;
+  width: 100% !important;
+  border-top: 1px solid hsla(270, 40%, 50%, 0.15) !important;
+  padding-top: 1rem !important;
+}
+
+.beacon-section-container .gh-meta-item {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  font-size: 0.78rem !important;
+  color: rgba(255, 255, 255, 0.65) !important;
+}
+
+.beacon-section-container .meta-icon {
+  color: #ee00ff !important;
+  flex-shrink: 0 !important;
+}
+
+.beacon-section-container .follow-btn {
+  display: block !important;
+  width: 100% !important;
+  padding: 0.75rem 1.25rem !important;
+  background: linear-gradient(135deg, #ee00ff, #b500c4) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 8px !important;
+  font-size: 0.8rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  text-decoration: none !important;
+  text-align: center !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 4px 15px rgba(238, 0, 255, 0.3) !important;
+}
+
+.beacon-section-container .follow-btn:hover {
+  background: linear-gradient(135deg, #f333ff, #cc00dd) !important;
+  box-shadow: 0 6px 20px rgba(238, 0, 255, 0.45) !important;
+  transform: translateY(-2px) !important;
+}
+
+.beacon-section-container .about-actions {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 1rem !important;
+  width: 100% !important;
+  margin-top: 0.25rem !important;
+}
+
+.beacon-section-container .about-actions .btn-secondary {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0.65rem 1.2rem !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  background: rgba(255, 255, 255, 0.02) !important;
+  color: #ffffff !important;
+  border-radius: 6px !important;
+  font-size: 0.78rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.05em !important;
+  text-decoration: none !important;
+  transition: all 0.3s ease !important;
+}
+
+.beacon-section-container .about-actions .btn-secondary:hover {
+  border-color: #ee00ff !important;
+  background: hsla(270, 50%, 50%, 0.12) !important;
+  box-shadow: 0 0 10px rgba(238, 0, 255, 0.2) !important;
+  transform: translateY(-1px) !important;
+}
+
+@media (max-width: 900px) {
+  .beacon-section-container .about-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2.5rem !important;
+  }
+  .beacon-section-container .about-actions {
+    justify-content: center !important;
+  }
+  .beacon-section-container .skills-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+.beacon-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 1.5rem;
+  border: 3px solid hsl(270, 80%, 65%);
+  box-shadow: 0 0 20px hsla(270, 80%, 65%, 0.4);
+}
+
+.beacon-content {
+  font-size: 1.15rem;
+  line-height: 1.8;
+  color: hsl(0, 0%, 85%);
+  margin-bottom: 0.5rem;
+}
+
+.beacon-meta {
+  font-size: 0.8rem;
+  color: hsl(270, 15%, 50%);
+  margin-top: 2rem;
+  font-family: "Space Grotesk", monospace;
+  letter-spacing: 0.05em;
+}
+
+/* Custom scrollbar for beacon card */
+.beacon-card::-webkit-scrollbar {
+  width: 6px;
+}
+.beacon-card::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+.beacon-card::-webkit-scrollbar-thumb {
+  background: hsla(270, 80%, 65%, 0.3);
+  border-radius: 10px;
+}
+.beacon-card::-webkit-scrollbar-thumb:hover {
+  background: hsla(270, 80%, 65%, 0.5);
+}

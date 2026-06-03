@@ -1,9 +1,13 @@
 /* js/references.js — Interactive Reference Testimonials Slider */
-(function initReferencesSlider() {
-  const container = document.getElementById('references-slider-container');
+window.initReferencesSlider = function(containerOverride) {
+  const container = containerOverride || document.getElementById('references-slider-container');
   if (!container) return;
 
-  // 6 Custom Professional reviews written about Avijit Roy
+  // Cleanup old instance if exists on this specific container
+  if (container._sliderCleanup) {
+    container._sliderCleanup();
+  }
+
   const REVIEWS = [
     {
       text: "Avijit brought incredible creativity to our IoT dashboard project. His ability to blend 3D Three.js visualizations with live MQTT sensor streams completely transformed how our users interact with physical data. A absolute marvel of a developer!",
@@ -31,7 +35,6 @@
     }
   ];
 
-  // Resilient fallback people in case API request fails or is offline
   const FALLBACK_PEOPLE = [
     { name: "Sarah Jenkins", pic: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80" },
     { name: "David Chen", pic: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80" },
@@ -60,45 +63,63 @@
     const dotsHtml = REVIEWS.map((_, i) => `<span class="slider-dot ${i === 0 ? 'active' : ''}" data-index="${i}"></span>`).join('');
 
     container.innerHTML = `
-      <div class="slider-viewport" id="slider-viewport">
-        <div class="slider-track" id="slider-track">
+      <div class="slider-viewport">
+        <div class="slider-track">
           ${slidesHtml}
         </div>
       </div>
       <div class="slider-controls">
-        <button class="slider-btn" id="slider-prev" aria-label="Previous slide">
+        <button class="slider-btn btn-prev" aria-label="Previous slide">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
         </button>
-        <div class="slider-dots" id="slider-dots">
+        <div class="slider-dots">
           ${dotsHtml}
         </div>
-        <button class="slider-btn" id="slider-next" aria-label="Next slide">
+        <button class="slider-btn btn-next" aria-label="Next slide">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
       </div>`;
 
-    setupSliderLogic();
+    setupSliderLogic(container);
   }
 
-  function setupSliderLogic() {
-    const track = document.getElementById('slider-track');
-    const dots  = document.querySelectorAll('.slider-dot');
-    const prev  = document.getElementById('slider-prev');
-    const next  = document.getElementById('slider-next');
+  function setupSliderLogic(root) {
+    const track = root.querySelector('.slider-track');
+    const prev  = root.querySelector('.btn-prev');
+    const next  = root.querySelector('.btn-next');
+    const dots  = root.querySelectorAll('.slider-dot');
+    const viewport = root.querySelector('.slider-viewport');
     if (!track || !prev || !next) return;
 
     let index = 0;
     const total = REVIEWS.length;
     let autoplayTimer = null;
 
-    function updateSlider() {
-      track.style.transform = `translateX(-${index * 100}%)`;
+    function getCardWidth() {
+      if (viewport && viewport.clientWidth > 0) return viewport.clientWidth;
+      const firstCard = track.firstElementChild;
+      return firstCard ? firstCard.offsetWidth : root.offsetWidth;
+    }
+
+    function updateSlider(immediate = false) {
+      const cardWidth = getCardWidth();
+      if (cardWidth <= 0) return;
+      if (immediate) track.style.transition = 'none';
+      track.style.transform = `translateX(-${index * cardWidth}px)`;
+      if (immediate) {
+        track.offsetHeight; 
+        track.style.transition = '';
+      }
       dots.forEach((dot, idx) => {
         dot.classList.toggle('active', idx === index);
       });
     }
 
     function slideNext() {
+      if (!root.isConnected) {
+        stopAutoplay();
+        return;
+      }
       index = (index + 1) % total;
       updateSlider();
     }
@@ -108,32 +129,31 @@
       updateSlider();
     }
 
-    prev.addEventListener('click', () => { slidePrev(); restartAutoplay(); });
-    next.addEventListener('click', () => { slideNext(); restartAutoplay(); });
+    const onPrevClick = () => { slidePrev(); restartAutoplay(); };
+    const onNextClick = () => { slideNext(); restartAutoplay(); };
+    
+    prev.addEventListener('click', onPrevClick);
+    next.addEventListener('click', onNextClick);
 
-    dots.forEach(dot => {
-      dot.addEventListener('click', e => {
-        index = parseInt(e.target.getAttribute('data-index'));
-        updateSlider();
-        restartAutoplay();
-      });
-    });
+    const onDotClick = e => {
+      index = parseInt(e.target.getAttribute('data-index'));
+      updateSlider();
+      restartAutoplay();
+    };
 
-    // Touch & Swipe Support
+    dots.forEach(dot => dot.addEventListener('click', onDotClick));
+
     let startX = 0, currentX = 0, isSwiping = false;
-
-    track.addEventListener('touchstart', e => {
+    const onTouchStart = e => {
       startX = e.touches[0].clientX;
       isSwiping = true;
       stopAutoplay();
-    }, { passive: true });
-
-    track.addEventListener('touchmove', e => {
+    };
+    const onTouchMove = e => {
       if (!isSwiping) return;
       currentX = e.touches[0].clientX;
-    }, { passive: true });
-
-    track.addEventListener('touchend', () => {
+    };
+    const onTouchEnd = () => {
       if (!isSwiping) return;
       isSwiping = false;
       const diff = startX - currentX;
@@ -142,30 +162,46 @@
         else slidePrev();
       }
       restartAutoplay();
-    });
+    };
 
-    // Autoplay Engine
-    function startAutoplay() {
-      autoplayTimer = setInterval(slideNext, 7000);
-    }
+    track.addEventListener('touchstart', onTouchStart, { passive: true });
+    track.addEventListener('touchmove', onTouchMove, { passive: true });
+    track.addEventListener('touchend', onTouchEnd);
 
-    function stopAutoplay() {
-      clearInterval(autoplayTimer);
-    }
+    const onResize = () => updateSlider(true);
+    window.addEventListener('resize', onResize);
 
-    function restartAutoplay() {
+    function startAutoplay() { 
       stopAutoplay();
-      startAutoplay();
+      autoplayTimer = setInterval(slideNext, 7000); 
     }
+    function stopAutoplay() { 
+      if (autoplayTimer) {
+        clearInterval(autoplayTimer);
+        autoplayTimer = null;
+      }
+    }
+    function restartAutoplay() { stopAutoplay(); startAutoplay(); }
 
-    startAutoplay();
-
-    // Pause on hover
     track.addEventListener('mouseenter', stopAutoplay);
     track.addEventListener('mouseleave', startAutoplay);
+    
+    startAutoplay();
+
+    root._sliderCleanup = () => {
+      stopAutoplay();
+      prev.removeEventListener('click', onPrevClick);
+      next.removeEventListener('click', onNextClick);
+      dots.forEach(dot => dot.removeEventListener('click', onDotClick));
+      track.removeEventListener('touchstart', onTouchStart);
+      track.removeEventListener('touchmove', onTouchMove);
+      track.removeEventListener('touchend', onTouchEnd);
+      track.removeEventListener('mouseenter', stopAutoplay);
+      track.removeEventListener('mouseleave', startAutoplay);
+      window.removeEventListener('resize', onResize);
+    };
   }
 
-  // Fetch 6 random people using RandomUser API
   fetch('https://randomuser.me/api/?results=6&inc=name,picture&nat=us,gb,ca,au')
     .then(res => res.json())
     .then(data => {
@@ -176,7 +212,8 @@
       renderSlider(people);
     })
     .catch(() => {
-      // Graceful fallback to static high-res avatars
       renderSlider(FALLBACK_PEOPLE);
     });
-})();
+};
+
+window.initReferencesSlider();

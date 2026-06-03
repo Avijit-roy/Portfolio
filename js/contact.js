@@ -1,11 +1,13 @@
 /* js/contact.js — Contact form submit handler */
-(function initContactForm() {
-  const form = document.getElementById('contact-form');
+window.initContactForm = function(formOverride) {
+  const form = formOverride || document.getElementById('contact-form');
   if (!form) return;
 
   form.addEventListener('submit', e => {
     e.preventDefault();
     const btn = form.querySelector('button[type="submit"]');
+    if (!btn) return;
+    
     btn.textContent = 'Sending…';
     btn.disabled = true;
 
@@ -17,4 +19,6 @@
         </div>`;
     }, 1200);
   });
-})();
+};
+
+window.initContactForm();

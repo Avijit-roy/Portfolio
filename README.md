@@ -1,6 +1,6 @@
 # Avijit Roy — Creative Developer Portfolio
 
-An immersive, premium, high-fidelity portfolio website built with pure HTML, Vanilla CSS, and JavaScript. Featuring a real-time interactive Three.js 3D canvas, dynamic starfield particle systems, and advanced REST API integrations.
+An immersive, premium, high-fidelity portfolio website built with pure HTML, Vanilla CSS, and JavaScript. Featuring a real-time interactive Three.js 3D canvas, dynamic beacon navigation system, and advanced REST API integrations.
 
 ### 🌐 Live Demo
 👉 **[View Live Portfolio](https://portfolio-xi-teal-37.vercel.app/)**
@@ -9,38 +9,38 @@ An immersive, premium, high-fidelity portfolio website built with pure HTML, Van
 
 ## 🎨 Design & Architecture
 * **Asymmetric Visuals**: Features a floating glassmorphic container card aligned to the left, leaving the right side open as a dedicated stage for live 3D web rendering.
-* **100% Modular Structure**: Completely decoupled legacy monolithic stylesheets and scripts into single-responsibility, highly maintainable component modules without the overhead of build tools or package managers.
+* **Interactive 3D Universe**: A fully realized space environment featuring an animated spaceship, solar embers, and shimmering energy trails.
+* **100% Modular Structure**: Completely decoupled stylesheets and scripts into single-responsibility, highly maintainable component modules.
 
 ---
 
 ## 🚀 Key Features
 
 ### 1. **Interactive 3D Stage (Three.js)**
-* Renders a premium, metallic, heart-shaped potion bottle model (`.glb`).
-* Features an auto-calculating `Box3` bounding volume to center the model perfectly on its pivot point, allowing visual rotation around its absolute middle.
-* Fully interactive lighting system featuring point light sweeps, ambient illumination, and directional highlighting.
-* Reacts dynamically to mouse coordinates (hover movement) and drag gestures (with full momentum physics).
+* Renders a high-fidelity space traveler model (`scene.glb`).
+* **Post-Processing**: Uses `UnrealBloomPass` for a cinematic sci-fi glow.
+* **Particle Systems**: Custom-built systems for twinkling sparkles, solar vortex embers, and energy trails.
+* **Dynamic Interaction**: Camera reacts to orbit controls with smooth damping and momentum physics.
 
-### 2. **Ambient Music Engine**
-* Plays background space music (`leberch-space-440026.mp3`) with an active equalizer toggle button.
-* Bouncing equalizer visualizer animations sync perfectly with play/pause states.
-* **Autoplay-on-Load**: Automatically resumes audio playing across page reloads.
-* **Autoplay Resiliency**: Gracefully detects browser policy blocks and registers a silent, one-time document click/touch event listener to play sound instantly on the user's first natural page interaction.
-* **State Persistence**: Remembers your audio configuration (playing vs. paused) across sessions using `localStorage`.
+### 2. **3D Beacon Navigation System**
+* **In-World Interaction**: Interactive 3D beacons floating in space that act as navigation portals.
+* **Content Injection**: Clicking a beacon dynamically clones and injects HTML sections into a futuristic glassmorphic popup.
+* **Smart Content Mapping**: Automatically detects and renders specialized content like GitHub graphs, testimonial sliders, or contact forms within the 3D portal.
 
-### 3. **Dynamic Client Recommendations**
-* A high-fidelity, sliding horizontal testimonial card track showing professional reviews.
-* Integrates with the **RandomUser REST API** to dynamically fetch candidate avatars and details on every fresh page load.
-* Features a robust local fallback mechanism using premium Unsplash visuals if rate limits are hit or connection is offline.
-* Supports responsive, physics-based touch/swipe actions on mobile.
+### 3. **Ambient Music & SFX Engine**
+* **Background Soundtrack**: Immersive space ambient audio with a persistent equalizer toggle.
+* **Sci-Fi Click Effects**: Tactical audio feedback (`.wav`) on all interactive UI elements and 3D beacons.
+* **State Persistence**: Remembers user audio preferences across sessions using `localStorage`.
+* **Autoplay Resiliency**: Gracefully handles browser autoplay restrictions with intelligent event listeners.
 
-### 4. **Live GitHub Integrations**
-* Uses the **GitHub REST API** to dynamically fetch repository stars, counts, and descriptions.
-* Displays a live, stylized contribution graph (`ghchart.rshah.org`) showing continuous contribution details.
+### 4. **Modern UI/UX**
+* **Desktop Tooltips**: Clean header navigation that hides text labels on desktop to prioritize visuals, showing them as elegant tooltips on hover.
+* **Mobile Optimized**: Fully responsive drawer menu with an offset header to prevent overlap on small screens.
+* **Dynamic Recommendations**: Fetches professional reviews and integrates with the **RandomUser REST API** for realistic, dynamic candidate avatars.
 
-### 5. **Creative Parallax Starfield**
-* Generates thousands of stars dynamically on a hardware-accelerated `<canvas>`.
-* Includes parallax depth physics, interactive drag acceleration, and shooting stars across the viewport.
+### 5. **Live GitHub Integrations**
+* **Repository Metrics**: Uses the **GitHub REST API** to dynamically fetch stars, counts, and project descriptions.
+* **Contribution Graph**: Displays a live, stylized contribution chart showing coding activity.
 
 ---
 
@@ -49,34 +49,25 @@ An immersive, premium, high-fidelity portfolio website built with pure HTML, Van
 ```
 MyPortfolio/
 ├── index.html               # Semantic HTML structure & viewport config
-├── Aj.pdf                   # Resume document
-├── ChatGPTImage.png         # Hero avatar picture
-├── icons8-star-100.png      # Custom star favicon
-├── leberch-space-440026.mp3  # Ambient background soundtrack
-├── pixellabs-potion-3620.glb  # High-fidelity 3D Potion bottle asset
+├── assets/
+│   ├── audio/               # Ambient soundtrack and SFX
+│   ├── images/              # Avatars, icons, and favicons
+│   └── models/              # High-fidelity 3D GLB assets
 │
-├── css/                     # Modulalized Stylesheets
-│   ├── base.css             # Design tokens, reset, typography, and base animations
-│   ├── cursor.css           # Custom cursor dot and trailing delayed ring
-│   ├── navbar.css           # Header navigation, hamburger toggle, and EQ visualizer
-│   ├── hero.css             # Floating left-aligned glassmorphic container
-│   ├── work.css             # Dynamic project grid cards and skeleton loaders
-│   ├── about.css            # Developer info, skill chips, and Github metrics
-│   ├── github.css           # Contribution graph section panel
-│   ├── references.css       # Client Feedback testimonial slider
-│   ├── contact.css          # Styled contact form inputs and buttons
-│   ├── footer.css           # Footer info
-│   └── responsive.css       # Complete viewport media queries
+├── css/                     # Modularized Stylesheets
+│   ├── base.css             # Reset, typography, and base animations
+│   ├── beacons.css          # 3D portal popups and beacon headers
+│   ├── navbar.css           # Navigation, logo, and desktop tooltips
+│   ├── responsive.css       # Viewport-specific media queries
+│   └── (and more...)        # Section-specific styles (hero, work, about, etc.)
 │
 └── js/                      # Modularized ES6 Components
-    ├── cursor.js            # Custom interactive mouse trailing cursor
+    ├── scene.js             # Three.js main scene, lighting, and animation loop
+    ├── beacons.js           # 3D interaction logic and popup management
     ├── stars.js             # Canvas starfield parallax & shooting stars
-    ├── model3d.js           # Three.js 3D GLTF renderer, lights & interaction
-    ├── navbar.js            # Sticky header, mobile drawer menu & anchor navigation
-    ├── projects.js          # Live GitHub repository REST API fetcher
-    ├── references.js        # Testimonials carousel with RandomUser API integration
-    ├── contact.js           # Interactive form submission simulator
-    └── audio.js             # Persisted sound engine & autoplay controller
+    ├── audio.js             # Sound engine and SFX controller
+    ├── navbar.js            # Scroll logic and mobile menu behavior
+    └── (and more...)        # Functional logic (projects, references, etc.)
 ```
 
 ---
@@ -84,23 +75,17 @@ MyPortfolio/
 ## ⚡ Quick Start
 
 ### ⚠️ Important: CORS Policy Restriction
-Modern browsers strictly prevent loading external binary files (like the `.glb` 3D model) directly from the local file system (`file://` protocol) due to Cross-Origin Resource Sharing (CORS) security restrictions.
+Modern browsers strictly prevent loading external binary files (like the `.glb` 3D model) directly from the local file system (`file://` protocol).
 
-**To run the website locally and view the 3D model, you must use a local HTTP server:**
+**To run the website locally, you must use a local HTTP server:**
 
 1. Navigate to your project directory:
    ```bash
-   cd "webdeveloping/MyPortfolio"
+   cd "MyPortfolio"
    ```
 2. Start a simple web server:
-   * **Python 3**:
-     ```bash
-     python3 -m http.server 8000 --bind 127.0.0.1
-     ```
-   * **NodeJS**:
-     ```bash
-     npx http-server -p 8000
-     ```
+   * **Python 3**: `python3 -m http.server 8000`
+   * **NodeJS**: `npx http-server -p 8000`
 3. Open your browser and view the portfolio live:
    👉 **[http://127.0.0.1:8000/](http://127.0.0.1:8000/)**
 
@@ -108,9 +93,9 @@ Modern browsers strictly prevent loading external binary files (like the `.glb` 
 
 ## 🛠️ Built With
 * [Three.js](https://threejs.org/) — Immersive WebGL 3D render engine.
-* [Space Grotesk & Inter](https://fonts.google.com/) — Elegant typography from Google Fonts.
-* [RandomUser API](https://randomuser.me/) — Realistic, dynamic client avatars.
-* [GitHub REST API](https://docs.github.com/en/rest) — Star metrics and user information.
+* [Space Grotesk & Inter](https://fonts.google.com/) — Futuristic typography.
+* [GitHub REST API](https://docs.github.com/en/rest) — Dynamic project data.
+* [RandomUser API](https://randomuser.me/) — Realistic recommendation avatars.
 
 ---
 
@@ -119,4 +104,4 @@ This project is open source and available for educational and personal use.
 
 ---
 
-**Made with ❤️ by Avijit Roy**
+**Crafted with 💜 by Avijit Roy**
