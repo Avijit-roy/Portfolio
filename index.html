@@ -29,12 +29,12 @@
   <!-- Preload Critical Assets -->
   <link rel="preload" href="assets/models/scene.glb" as="fetch" crossorigin="anonymous" />
 
-  <!-- Three.js ES-module import map (Local) -->
+  <!-- Three.js ES-module import map (CDN) -->
   <script type="importmap">
   {
     "imports": {
-      "three": "./node_modules/three/build/three.module.js",
-      "three/addons/": "./node_modules/three/examples/jsm/"
+      "three": "https://esm.sh/three@0.165.0",
+      "three/addons/": "https://esm.sh/three@0.165.0/examples/jsm/"
     }
   }
   </script>
