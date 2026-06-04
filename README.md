@@ -3,7 +3,7 @@
 An immersive, premium, high-fidelity portfolio website built with pure HTML, Vanilla CSS, and JavaScript. Featuring a real-time interactive Three.js 3D canvas, dynamic beacon navigation system, and advanced REST API integrations.
 
 ### 🌐 Live Demo
-👉 **[View Live Portfolio](https://portfolio-xi-teal-37.vercel.app/)**
+👉 **[View Live Portfolio](https://portfolio-cg1z.onrender.com/)**
 
 ---
 
