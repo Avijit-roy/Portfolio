@@ -279,18 +279,6 @@ function initPatternUI() {
   root.style.height = "320px";
   root.style.overflow = "hidden";
   root.appendChild(canvas);
-  const controls = document.createElement("div");
-  controls.className = "pattern-controls";
-  controls.style.position = "absolute";
-  controls.style.right = "12px";
-  controls.style.bottom = "12px";
-  controls.style.zIndex = "50";
-  const btn = document.createElement("button");
-  btn.id = "btn-generate-pattern";
-  btn.className = "btn";
-  btn.textContent = "Generate New Pattern";
-  controls.appendChild(btn);
-  root.appendChild(controls);
   const hero = document.getElementById("hero");
   if (hero && hero.parentNode)
     hero.parentNode.insertBefore(root, hero.nextSibling);
@@ -303,11 +291,6 @@ function initPatternUI() {
     const cfg = await resp.json();
     renderer.loadAndRender(cfg);
   }
-  btn.addEventListener("click", async () => {
-    btn.disabled = true;
-    await fetchAndRender();
-    setTimeout(() => btn.disabled = false, 600);
-  });
   fetchAndRender();
 }
 if (document.readyState === "loading")

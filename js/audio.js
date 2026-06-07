@@ -2,6 +2,7 @@
 (function initBackgroundAudio() {
   const audio      = document.getElementById('bg-audio');
   const clickAudio = document.getElementById('click-audio');
+  const laserAudio = document.getElementById('laser-audio');
   const toggleBtn  = document.getElementById('sound-toggle');
 
   if (!audio || !toggleBtn) {
@@ -19,6 +20,13 @@
     if (!clickAudio) return;
     clickAudio.currentTime = 0;
     clickAudio.play().catch(err => console.warn('[audio] Click sound failed:', err));
+  };
+
+  // Global helper for laser gun SFX
+  window.playLaserSound = function() {
+    if (!laserAudio) return;
+    laserAudio.currentTime = 0;
+    laserAudio.play().catch(err => console.warn('[audio] Laser sound failed:', err));
   };
 
   function setPlaying(playing) {

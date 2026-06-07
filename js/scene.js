@@ -85,9 +85,119 @@ let beaconManager = null;
 const energyTrails = [];
 const vortexParts = [];
 const propulrorParts = [];
+const lasers = []; // Active laser bolts
+const laserParticles = []; // Cyan sparks
 let sparkles = null;
 let vortexEmbers = null;
 let propulrorSparkles = null;
+
+let nave2Object = null;
+let vortex1Object = null;
+
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+function createBlueSparks(pos, dir) {
+  const count = 16;
+  const sparkGeo = new THREE.SphereGeometry(0.2, 4, 4);
+  const sparkMat = new THREE.MeshBasicMaterial({
+    color: 0xffffff,
+    transparent: true,
+    opacity: 1
+  });
+
+  for (let i = 0; i < count; i++) {
+    const spark = new THREE.Mesh(sparkGeo, sparkMat.clone());
+    spark.position.copy(pos);
+    
+    // Spread velocity
+    const velocity = dir.clone()
+      .add(new THREE.Vector3(
+        (Math.random() - 0.5) * 2.0,
+        (Math.random() - 0.5) * 2.0,
+        (Math.random() - 0.5) * 2.0
+      ))
+      .normalize()
+      .multiplyScalar(Math.random() * 4 + 2);
+
+    laserParticles.push({
+      mesh: spark,
+      velocity: velocity,
+      life: 1.0,
+      decay: 0.03 + Math.random() * 0.05
+    });
+    scene.add(spark);
+  }
+}
+
+function fireLaser() {
+  if (!nave2Object || !vortex1Object) return;
+
+  // Sound feedback
+  if (window.playLaserSound) window.playLaserSound();
+
+  // Material for Raw Blue Neon Energy - Solid & Sharp
+  const beamMat = new THREE.MeshBasicMaterial({ 
+    color: 0xffffff
+  });
+
+  const startPos = new THREE.Vector3();
+  nave2Object.getWorldPosition(startPos);
+  
+  const targetPos = new THREE.Vector3();
+  vortex1Object.getWorldPosition(targetPos);
+  
+  const direction = targetPos.clone().sub(startPos).normalize();
+  const up = new THREE.Vector3(0, 1, 0);
+  const side = new THREE.Vector3().crossVectors(direction, up).normalize().multiplyScalar(5);
+
+  const createBolt = (offset) => {
+    const boltGroup = new THREE.Group();
+    
+    // Single thicker cylinder for a sharp "raw energy" beam look
+    const beamGeo = new THREE.CylinderGeometry(0.5, 1, 40, 8);
+    const beam = new THREE.Mesh(beamGeo, beamMat);
+    
+    boltGroup.add(beam);
+
+    const pos = startPos.clone().add(offset);
+    boltGroup.position.copy(pos);
+    boltGroup.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), direction);
+
+    scene.add(boltGroup);
+    lasers.push({
+      mesh: boltGroup,
+      target: targetPos,
+      direction: direction,
+      speed: 35, // Faster for more "energy" impact
+      distanceTraveled: 0,
+      maxDistance: pos.distanceTo(targetPos) + 50
+    });
+
+    createBlueSparks(pos, direction);
+  };
+
+  createBolt(side.clone().multiplyScalar(-1));
+  createBolt(side);
+}
+
+function handlePointerDown(event) {
+  const rect = renderer.domElement.getBoundingClientRect();
+  mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+  mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+  raycaster.setFromCamera(mouse, camera);
+  
+  if (nave2Object) {
+    // Check intersection with Nave_2 and all its children
+    const intersects = raycaster.intersectObject(nave2Object, true);
+    if (intersects.length > 0) {
+      fireLaser();
+    }
+  }
+}
+
+renderer.domElement.addEventListener('pointerdown', handlePointerDown);
 
 function hideOverlay() {
   const overlay = document.getElementById('scene-loading');
@@ -223,6 +333,9 @@ loader.load(
       if (child.name.includes('Propulror_3')) prop3 = child;
     });
 
+    nave2Object = nave2;
+    vortex1Object = vortex1;
+
     model.traverse((child) => {
       // 1. Vortex_1: Highest Priority
       if (vortex1 && (child === vortex1 || hasAncestor(child, 'Vortex_1'))) {
@@ -349,6 +462,41 @@ function animate() {
 
   if (mixer) mixer.update(delta);
   if (beaconManager) beaconManager.update(elapsed);
+
+  // Update Lasers
+  for (let i = lasers.length - 1; i >= 0; i--) {
+    const l = lasers[i];
+    const moveStep = l.direction.clone().multiplyScalar(l.speed);
+    l.mesh.position.add(moveStep);
+    l.distanceTraveled += l.speed;
+
+    if (l.distanceTraveled >= l.maxDistance) {
+      scene.remove(l.mesh);
+      l.mesh.traverse(child => {
+        if (child.isMesh) {
+          child.geometry.dispose();
+          child.material.dispose();
+        }
+      });
+      lasers.splice(i, 1);
+    }
+  }
+
+  // Update Laser Particles (Cyan Sparks)
+  for (let i = laserParticles.length - 1; i >= 0; i--) {
+    const p = laserParticles[i];
+    p.mesh.position.add(p.velocity);
+    p.life -= p.decay;
+    p.mesh.material.opacity = p.life;
+    p.mesh.scale.setScalar(p.life);
+    
+    if (p.life <= 0) {
+      scene.remove(p.mesh);
+      p.mesh.geometry.dispose();
+      p.mesh.material.dispose();
+      laserParticles.splice(i, 1);
+    }
+  }
 
   // Smooth Energy Shimmer (Orange)
   vortexParts.forEach(part => {
