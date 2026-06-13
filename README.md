@@ -3,7 +3,7 @@
 An immersive, premium, high-fidelity portfolio website built with pure HTML, Vanilla CSS, and JavaScript. Featuring a real-time interactive Three.js 3D canvas, dynamic beacon navigation system, and advanced REST API integrations.
 
 ### 🌐 Live Demo
-👉 **[View Live Portfolio](https://portfolio-m36q-j8zpi2303-aj5298626-3548s-projects.vercel.app/)**
+👉 **[View Live Portfolio](https://avijit-is-a-dev.vercel.app/)**
 
 ---
 
