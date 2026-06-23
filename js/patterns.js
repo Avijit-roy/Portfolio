@@ -24,6 +24,23 @@ var PatternRenderer = class {
     this.ctx = ctx;
     this.onResize();
     window.addEventListener("resize", () => this.onResize());
+
+    // Performance optimizations:
+    this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth < 768);
+    this.isVisible = false;
+
+    this.observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          this.isVisible = true;
+          this.startLoop();
+        } else {
+          this.isVisible = false;
+          this.stopLoop();
+        }
+      });
+    }, { threshold: 0.01 });
+    this.observer.observe(this.canvas);
   }
   onResize() {
     this.dpr = Math.max(1, window.devicePixelRatio || 1);
@@ -47,10 +64,10 @@ var PatternRenderer = class {
     this.start();
   }
   prepare(cfg) {
-    cancelAnimationFrame(this.animationId ?? 0);
+    this.stopLoop();
     this.particles = [];
     if (cfg.type === "particle-network" || cfg.type === "noise-field") {
-      const count = Math.max(8, Math.floor(cfg.density * 220));
+      const count = Math.max(8, Math.floor(cfg.density * (this.isMobile ? 80 : 220)));
       for (let i = 0; i < count; i++) {
         this.particles.push({
           x: this.rng() * this.width,
@@ -63,18 +80,31 @@ var PatternRenderer = class {
     }
   }
   start() {
-    if (!this.config)
+    if (!this.config) return;
+    if (this.isMobile) {
+      this.step(0); // Draw once to save power on mobile
       return;
+    }
+    if (this.isVisible) {
+      this.startLoop();
+    }
+  }
+  startLoop() {
+    if (this.animationId || !this.config || this.isMobile) return;
     const loop = (t) => {
       this.step(t);
       this.animationId = requestAnimationFrame(loop);
     };
     this.animationId = requestAnimationFrame(loop);
   }
-  stop() {
-    if (this.animationId)
+  stopLoop() {
+    if (this.animationId) {
       cancelAnimationFrame(this.animationId);
-    this.animationId = null;
+      this.animationId = null;
+    }
+  }
+  stop() {
+    this.stopLoop();
   }
   step(time) {
     const cfg = this.config;

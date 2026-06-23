@@ -27,6 +27,7 @@
 }
 
 .project-card {
+  position: relative;
   background: var(--bg-card);
   border: 1px solid var(--bg-card-border);
   border-radius: var(--radius-lg);

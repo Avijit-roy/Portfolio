@@ -30,8 +30,8 @@
       <article class="project-card reveal" id="dyn-project-${idx}">
         <div class="project-img-wrap" data-seed="${seed}">
           <div class="project-canvas-placeholder" aria-hidden="true"></div>
-          <div class="project-overlay">${actionLink}</div>
         </div>
+        <div class="project-overlay">${actionLink}</div>
         <div class="project-info">
           <div class="project-tags">${tags}</div>
           <h3 class="project-name">${repo.name}</h3>

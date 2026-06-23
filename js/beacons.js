@@ -5,7 +5,7 @@ const BEACON_DATA = [
     id: '01',
     title: 'Avijit Roy',
     tag: '01.Profile',
-    image: 'assets/images/ChatGPTImage.png', 
+    image: 'assets/images/ChatGPTImage.webp', 
     sectionSelector: '#hero-popup .hero-card',
     content: 'Creative Developer & Passionate Learner. I specialize in building full-stack applications, IoT systems, and immersive web experiences.',
     meta: 'ORIGIN: INDIA // SECTOR: FULL-STACK // STATUS: ACTIVE',

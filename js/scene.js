@@ -8,16 +8,19 @@ import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { BeaconManager } from './beacons.js';
 
 
+// ─── Mobile Detection & Performance Tuning ───────────────────────────────
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth < 768);
+
 // ─── Renderer ────────────────────────────────────────────────────────────────
 const canvas = document.getElementById('glb-canvas');
 
 const renderer = new THREE.WebGLRenderer({
   canvas,
-  antialias: true,
+  antialias: !isMobile,
   powerPreference: 'high-performance'
 });
 
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.0 : 1.5));
 renderer.setSize(window.innerWidth, window.innerHeight);
 
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -66,18 +69,21 @@ controls.maxDistance = 1000;
 controls.target.set(0, 0, -500);
 
 // ─── Post Processing ────────────────────────────────────────────────────────
-const composer = new EffectComposer(renderer);
-composer.addPass(new RenderPass(scene, camera));
+let composer = null;
+if (!isMobile) {
+  composer = new EffectComposer(renderer);
+  composer.addPass(new RenderPass(scene, camera));
 
-const bloomPass = new UnrealBloomPass(
-  new THREE.Vector2(window.innerWidth, window.innerHeight),
-  0.5, // Strength (Reduced from 1.5)
-  0.2, // Radius (Reduced from 0.4)
-  0.9  // Threshold (Increased from 0.85)
-);
+  const bloomPass = new UnrealBloomPass(
+    new THREE.Vector2(window.innerWidth, window.innerHeight),
+    0.5, // Strength (Reduced from 1.5)
+    0.2, // Radius (Reduced from 0.4)
+    0.9  // Threshold (Increased from 0.85)
+  );
 
-composer.addPass(bloomPass);
-composer.addPass(new OutputPass());
+  composer.addPass(bloomPass);
+  composer.addPass(new OutputPass());
+}
 
 // ─── Global State ────────────────────────────────────────────────────────────
 let mixer = null;
@@ -218,7 +224,7 @@ function hasAncestor(object, namePart) {
 
 // ─── Sparkles System ─────────────────────────────────────────────────────────
 function createSparkles(model) {
-  const count = 1500;
+  const count = isMobile ? 500 : 1500;
   const geometry = new THREE.BufferGeometry();
   const positions = new Float32Array(count * 3);
   const sizes = new Float32Array(count);
@@ -251,7 +257,7 @@ function createSparkles(model) {
 
 // ─── Edge-Focused Vortex Embers ───────────────────
 function createVortexEmbers(vortex) {
-  const count = 3500;
+  const count = isMobile ? 1000 : 3500;
   const geometry = new THREE.BufferGeometry();
   const positions = new Float32Array(count * 3);
   const box = new THREE.Box3().setFromObject(vortex);
@@ -286,7 +292,7 @@ function createVortexEmbers(vortex) {
 
 // ─── Propulror_3 Purplish Sparkles ──────────────────────────────────────────
 function createPropulrorSparkles(propulror) {
-  const count = 800;
+  const count = isMobile ? 300 : 800;
   const geometry = new THREE.BufferGeometry();
   const positions = new Float32Array(count * 3);
   const box = new THREE.Box3().setFromObject(propulror);
@@ -537,7 +543,11 @@ function animate() {
     sparkles.rotation.y += 0.0005;
   }
   controls.update();
-  composer.render();
+  if (composer) {
+    composer.render();
+  } else {
+    renderer.render(scene, camera);
+  }
 }
 
 animate();
@@ -548,5 +558,5 @@ window.addEventListener('resize', () => {
   camera.aspect = width / height;
   camera.updateProjectionMatrix();
   renderer.setSize(width, height);
-  composer.setSize(width, height);
+  if (composer) composer.setSize(width, height);
 });
