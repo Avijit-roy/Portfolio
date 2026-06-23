@@ -86,24 +86,12 @@
   position: absolute;
   top: 12px;
   left: 12px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.45rem 0.8rem;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #fff;
-  font-weight: 600;
-  font-size: 0.9rem;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
-  transition:
-    transform 0.18s ease,
-    background 0.18s ease;
+  z-index: 3;
+  pointer-events: auto;
+  transition: transform 0.18s ease;
 }
 .project-card:hover .project-overlay {
   transform: translateY(-3px);
-  background: rgba(255, 255, 255, 0.03);
 }
 .project-link,
 .project-link-modern {
